@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="weather.css">
+    <script src="https://kit.fontawesome.com/60f54233e9.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="card">
+        <div class="search">
+            <input type="text" id="c1" placeholder="Enter location">
+            <button onclick="searchLocation()" type="button"><img src="images/icon.png" alt=""></button>
+            
+        </div>
+        <div id="result" class="text-center p-2"></div>
+    </div>
+</body>
+<script>
+     function searchLocation(){
+        weather=c1.value
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${weather}&appid=b41ec3be35c7dac8aabbc21ba253137a`)
+        .then(data=>data.json()).then(out=>displayData(out))
+     }
+        function displayData(weatherData){
+            name1=weatherData.name
+            icon=weatherData.weather[0].icon
+            country=weatherData.sys.country
+            temp=parseInt((weatherData.main.temp)-273.15)
+            humidity=weatherData.main.humidity
+            pressure=weatherData.main.pressure
+            wind=Math.round(weatherData.wind.speed*3.5)
+           
+            result.innerHTML=`
+            <div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h3 class="card-title">${name1}, ${country}</h3>
+<img src="https://api.openweathermap.org/img/w/${icon}.png"
+  </div>
+  <ul>
+    <li><i class="fa-solid fa-temperature-three-quarters"></i>Temperature: ${temp}<sup>o</sup>C</li>
+    <li><i class="fa-solid fa-droplet"></i>Humidity: ${humidity}%</li>
+    <li><i class="fa-solid fa-cloud"></i>Pressure: ${pressure}hpa</li>
+    <li><i class="fa-solid fa-wind"></i>Wind Speed: ${wind}km/h</li>
+
+    </ul>
+  
+</div>`
+        }
+</script>
+</html>
